@@ -1,0 +1,138 @@
+{% extends "layout.html" %}
+{% block content %}
+
+    <div class="content-section">
+        <form method="POST" action="">
+            <!-- csrf token -->
+            {{ searchbar.hidden_tag() }}
+            <fieldset class="form-group form-control-sm">
+                <legend class="border-bottom">Search Person</legend>
+                    <div class="form-group">
+                        {{ searchbar.first.label(class="form-control-label") }}
+                        <!-- if there is an error in the searchbar -->
+                        {% if searchbar.first.errors %}
+                            {{ searchbar.first(class="form-control form-control-sm is-invalid")}}
+                            <div class="invalid-feedback">
+                                {% for error in searchbar.first.errors %}
+                                    <span> {{error}} </span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ searchbar.first(class="form-control form-control-sm")}}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ searchbar.middle.label(class="form-control-label") }}
+                        <!-- if there is an error in the searchbar -->
+                        {% if searchbar.middle.errors %}
+                            {{ searchbar.middle(class="form-control form-control-sm is-invalid")}}
+                            <div class="invalid-feedback">
+                                {% for error in searchbar.middle.errors %}
+                                    <span> {{error}} </span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ searchbar.middle(class="form-control form-control-sm")}}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ searchbar.last.label(class="form-control-label") }}
+                        <!-- if there is an error in the searchbar -->
+                        {% if searchbar.last.errors %}
+                            {{ searchbar.last(class="form-control form-control-sm is-invalid")}}
+                            <div class="invalid-feedback">
+                                {% for error in searchbar.last.errors %}
+                                    <span> {{error}} </span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ searchbar.last(class="form-control form-control-sm")}}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ searchbar.city.label(class="form-control-label") }}
+                        <!-- if there is an error in the searchbar -->
+                        {% if searchbar.city.errors %}
+                            {{ searchbar.city(class="form-control form-control-sm is-invalid")}}
+                            <div class="invalid-feedback">
+                                {% for error in searchbar.city.errors %}
+                                    <span> {{error}} </span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ searchbar.city(class="form-control form-control-sm")}}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{ searchbar.state.label(class="form-control-label") }}
+                        <!-- if there is an error in the searchbar -->
+                        {% if searchbar.state.errors %}
+                            {{ searchbar.state(class="form-control form-control-sm is-invalid")}}
+                            <div class="invalid-feedback">
+                                {% for error in searchbar.state.errors %}
+                                    <span> {{error}} </span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ searchbar.state(class="form-control form-control-sm")}}
+                        {% endif %}
+                    </div>
+            </fieldset>
+            <div class="form-group">
+                {{ searchbar.submit(class="btn btn-outline-dark")}}
+                {{ searchbar.reset(class="btn btn-outline-dark")}}
+            </div>
+
+        </form>
+    </div>
+
+
+    <caption>There are {{data_count}} results:</caption>
+    <table class="mb-2">
+        <!-- table header -->
+        <tr>
+            {% for header in dbheader %}
+                <th>{{header}}</th>
+            {% endfor %}
+        </tr>
+        <!-- table content -->
+        {% for info in data %}
+            <tr>
+                <td>{{info.id}}</td>
+                <td>{{info.branch}}</td>
+                <td>{{info.rank}}</td>
+                <td>{{info.grade}}</td>
+                <td>{{info.first}}</td>
+                <td>{{info.middle}}</td>
+                <td>{{info.last}}</td>
+                <td>{{info.city}}</td>
+                <td>{{info.state}}</td>
+                <td>{{info.panel}}</td>
+                <td>{{info.birth}}</td>
+                <td>{{info.start}}</td>
+                <td>{{info.incident}}</td>
+                <td>{{info.casualty}}</td>
+                <td>{{info.age}}</td>
+                <td>{{info.location}}</td>
+                <td>{{info.remains}}</td>
+                <td>{{info.type}}</td>
+                <td>{{info.reason}}</td>
+                <td>{{info.details}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    <div style="float:right" class="mb-2">
+        {% for page_num in data.iter_pages(left_edge=1, right_edge = 1, left_current = 1, right_current = 2) %}
+            {% if page_num %}
+                {% if data.page == page_num %}
+                    <a class="btn btn-secondary btn-sm" href="{{url_for('home', page=page_num)}}">{{page_num}}</a>
+                {% else %}
+                    <a class="btn btn btn-outline-dark btn-sm" href="{{url_for('home', page=page_num)}}">{{page_num}}</a>
+                {% endif %}
+            {% else %}
+                ...
+            {% endif %}
+        {% endfor %}
+    </div>
+
+{% endblock content %}
